@@ -1,0 +1,3 @@
+split the data into the different loops, just need to split the lines into a dictionary 
+loop1: { atom1: "", atom2: "", bond_dist: int, site_sym1: int, site_sym2: int }
+loop2: { atom1: "", atom2: "", bond_dist: int, site_sym1: int, site_sym2: int, site_sym3: int }
