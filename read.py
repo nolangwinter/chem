@@ -8,6 +8,7 @@ def readFile(filename):
     f = open(filename, "r")
     lines = f.readlines()
 
+    # keeps track of what loop in the file it is on
     cur_loop = ""
 
     for line in lines:
@@ -50,7 +51,7 @@ def readFile(filename):
                 #adds the dictionary to the second loop
                 loop2.append(line_dict)
 
-readFile("CA096_550_bonds.CIF")
+readFile("CA096_500_bonds.CIF")
 
 # print("loop1")
 # for dict1 in loop1:
@@ -66,11 +67,10 @@ readFile("CA096_550_bonds.CIF")
 #     print(dict2)
 #     print('\n')
 
-test_distance = [["Zn1", "O2"], ["Zn1", "O3"], ["V1", "O3"]]
+test_distance = [["Zn1", "O4"], ["Zn1", "O3"], ["V1", "O3"]]
 test_angle = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
 
 def FindDistance(test_distance, list_dict):
-    wanted_vals = []
     for dict in list_dict:
         for pair in test_distance:
             if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1]):
@@ -78,7 +78,6 @@ def FindDistance(test_distance, list_dict):
 
 
 def FindAngles(atoms, list_dict):
-    wanted_vals = []
     for dict in list_dict:
         for pair in atoms:
             if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1] and dict["atom3"] == pair[2]):
