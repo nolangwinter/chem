@@ -1,3 +1,3 @@
-split the data into the different loops, just need to split the lines into a dictionary 
-loop1: { atom1: "", atom2: "", bond_dist: int, site_sym1: int, site_sym2: int }
-loop2: { atom1: "", atom2: "", bond_dist: int, site_sym1: int, site_sym2: int, site_sym3: int }
+* excel/plot option 1: I can add them into the excel sheet without storing them in the program. I would then need to read the excel file in order to get the values to plot a graph
+
+* excel/plot option 2: locally store the values and then iterate and add them into the excel and plot at the same time

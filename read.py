@@ -1,9 +1,12 @@
 #pip install regex
 import re
+import matplotlib.pyplot as plt
+import fnmatch
+import os
+import csv
 
-loop1 = []
-loop2 = []
 
+# this function will read the file and split each line into a dictionary 
 def readFile(filename):
     f = open(filename, "r")
     lines = f.readlines()
@@ -51,38 +54,83 @@ def readFile(filename):
                 #adds the dictionary to the second loop
                 loop2.append(line_dict)
 
-readFile("CA096_500_bonds.CIF")
 
-# print("loop1")
-# for dict1 in loop1:
-#     print(dict1)
-#     print('\n')
+def FindDistance(test_distance, list_dict, dist_values):
+    for dict in list_dict:
+        for pair in test_distance:
+            if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1]):
+                dist_values.append(float(dict["bond_dist"]))
+    return dist_values
 
 
-# print('\n')
-# print('\n')
+def FindAngles(atoms, list_dict, values):
+    angle_values = []
+    for dict in list_dict:
+        for pair in atoms:
+            if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1] and dict["atom3"] == pair[2]):
+                values.append(float(dict["geom_angle"]))
+    return values
 
-# print("loop2")
-# for dict2 in loop2:
-#     print(dict2)
-#     print('\n')
+
 
 test_distance = [["Zn1", "O4"], ["Zn1", "O3"], ["V1", "O3"]]
 test_angle = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
 
-def FindDistance(test_distance, list_dict):
-    for dict in list_dict:
-        for pair in test_distance:
-            if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1]):
-                print(f"The bond distance between {dict['atom1']} and {dict['atom2']} is {dict['bond_dist']}")
+
+# Code execution starts here
+
+# **************************************************************
+# THIS IS WHERE YOU WOULD AJUST THE VALUES THAT YOU WANT TO GET
+#***************************************************************
+distances = [["Zn1", "O4"], ["Zn1", "O3"], ["V1", "O3"]]
+angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
+
+# creating the header for the csv file
+with open('results.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    field = ["tempurature"]
+
+    for i in range(len(distances)):
+        index = 0
+        atoms = ""
+        while (index <= 1):
+            atoms += distances[i][index]
+            if (index != 1):
+                atoms += " and "
+            index += 1
+        field.append(atoms)
+
+    for i in range(len(angles)):
+        index = 0
+        atoms = ""
+        while (index <= 2):
+            atoms += angles[i][index]
+            if (index != 2):
+                atoms += " and "
+            index += 1
+        field.append(atoms)
+
+    writer.writerow(field)
+    
+# looping through the .CIF files and adding the desired results to results.csv
+current_temp = 500
+for file in os.listdir('.'):
+    if fnmatch.fnmatch(file, '*.CIF'):
+        print(file)
+        loop1 = []
+        loop2 = []
+        values = [current_temp]
+        readFile(file)
+        values = FindDistance(distances, loop1, values)
+        values = FindAngles(angles, loop2, values)
+        print(values)
+        print("\n")
+        with open('results.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(values)
+
+        current_temp += 50
 
 
-def FindAngles(atoms, list_dict):
-    for dict in list_dict:
-        for pair in atoms:
-            if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1] and dict["atom3"] == pair[2]):
-                print(f"The geom angle between {dict['atom1']}, {dict['atom2']} and {dict['atom3']} is {dict['geom_angle']}")
         
-FindDistance(test_distance, loop1)
-FindAngles(test_angle, loop2)
 
