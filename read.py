@@ -2,6 +2,8 @@
 import re
 # pip install matplotlib
 import matplotlib.pyplot as plt
+#pip install pandas
+from pandas import *
 import fnmatch
 import os
 import csv
@@ -57,26 +59,56 @@ def readFile(filename):
 
 
 def FindDistance(test_distance, list_dict, dist_values):
-    for dict in list_dict:
-        for pair in test_distance:
+    
+    for pair in test_distance:
+        val = ""
+        for dict in list_dict:
             if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1]):
-                dist_values.append(float(dict["bond_dist"]))
+                if val != "":
+                    val += ", "
+                val += dict["bond_dist"]
+        dist_values.append(val)
     return dist_values
 
 
 def FindAngles(atoms, list_dict, values):
-    angle_values = []
-    for dict in list_dict:
-        for pair in atoms:
+
+    for pair in atoms:
+        val = ""
+        for dict in list_dict:
             if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1] and dict["atom3"] == pair[2]):
-                values.append(float(dict["geom_angle"]))
+                print(dict["atom1"], dict["atom2"], dict["atom3"] )
+                print(dict["geom_angle"])
+                if val != "":
+                    val += ", "
+                val += dict["geom_angle"]
+        values.append(val)
     return values
 
-
-
-test_distance = [["Zn1", "O4"], ["Zn1", "O3"], ["V1", "O3"]]
-test_angle = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
-
+def CreateGraphs(col, title, value_des):
+    x = []
+    y = []
+    with open('results.csv','r') as csvfile: 
+        lines = csv.reader(csvfile, delimiter=',')
+        next(lines)
+        for row in lines:
+            if row[col].find(','):
+                values = row[col].split(", ")
+                for val in values:
+                    x.append(row[0])
+                    y.append(float(val))
+            else:
+                x.append(row[0])
+                y.append(float(row[col])) 
+    
+    plt.scatter(x, y, c='g', s = 100) 
+    
+    plt.xticks(rotation = 25) 
+    plt.xlabel('Temperature(°F)') 
+    plt.ylabel(value_des) 
+    plt.title(f'{title}', fontsize = 20) 
+    # plt.savefig(f'{title}.png')
+    plt.show()
 
 # Code execution starts here
 
@@ -92,7 +124,7 @@ if __name__ == "__main__" :
     # creating the header for the csv file
     with open('results.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        field = ["tempurature"]
+        field = ["Temp"]
 
         for i in range(len(distances)):
             index = 0
@@ -117,13 +149,14 @@ if __name__ == "__main__" :
         writer.writerow(field)
         
     # looping through the .CIF files and adding the desired results to results.csv
-    current_temp = 500
     for file in os.listdir('.'):
         if fnmatch.fnmatch(file, '*.CIF'):
-            print(file)
+            temp = re.findall(r'\_.*?\_', file)
+            temp = temp[0].strip("_")
+            print(temp)
             loop1 = []
             loop2 = []
-            values = [current_temp]
+            values = [temp]
             readFile(file)
             values = FindDistance(distances, loop1, values)
             values = FindAngles(angles, loop2, values)
@@ -133,8 +166,19 @@ if __name__ == "__main__" :
                 writer = csv.writer(file)
                 writer.writerow(values)
 
-            current_temp += 50
-
-
-        
+    # creating the different graphs
+    with open('results.csv','r') as csvfile: 
+        lines = csv.reader(csvfile, delimiter=',')
+        header = []
+        for row in lines:
+            header = row
+            break
+        i = 1
+        for val in header:
+            
+            if ( i <= len(distances)):
+                CreateGraphs(i, header[i], "Bond Distance")
+            elif (i < len(header)):
+                CreateGraphs(i, header[i], "Geom Angle")
+            i += 1
 
