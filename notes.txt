@@ -1,5 +1,0 @@
-* excel/plot option 1: I can add them into the excel sheet without storing them in the program. I would then need to read the excel file in order to get the values to plot a graph
-
-* excel/plot option 2: locally store the values and then iterate and add them into the excel and plot at the same time
-
-* while the first atom matches, find all of matches for that particular element

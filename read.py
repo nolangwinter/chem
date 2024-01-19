@@ -1,3 +1,9 @@
+"""
+SCRIPT 1 (read.py inside of each folder): python read.py
+
+SCRIPT 2 (read.py stored in one location): python "the path the file is located at"/read.py
+"""
+
 #pip install regex
 import re
 # pip install matplotlib
@@ -77,8 +83,6 @@ def FindAngles(atoms, list_dict, values):
         val = ""
         for dict in list_dict:
             if (dict["atom1"] == pair[0] and dict["atom2"] == pair[1] and dict["atom3"] == pair[2]):
-                print(dict["atom1"], dict["atom2"], dict["atom3"] )
-                print(dict["geom_angle"])
                 if val != "":
                     val += ", "
                 val += dict["geom_angle"]
@@ -107,11 +111,12 @@ def CreateGraphs(col, title, value_des):
     plt.xlabel('Temperature(°F)') 
     plt.ylabel(value_des) 
     plt.title(f'{title}', fontsize = 20) 
-    # plt.savefig(f'{title}.png')
     plt.show()
 
+#****************************
 # Code execution starts here
-
+#****************************
+    
 if __name__ == "__main__" :
 
 
@@ -119,6 +124,7 @@ if __name__ == "__main__" :
     # THIS IS WHERE YOU WOULD AJUST THE VALUES THAT YOU WANT TO GET
     #***************************************************************
     distances = [["Zn1", "Mg1"], ["Zn1", "O3"], ["V1", "O3"]]
+    # distances = [["Zn1", "Mg1"], ["Zn1", "O3"], ["V1", "O3"], ['O1', 'V1']]
     angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
 
     # creating the header for the csv file
@@ -153,15 +159,15 @@ if __name__ == "__main__" :
         if fnmatch.fnmatch(file, '*.CIF'):
             temp = re.findall(r'\_.*?\_', file)
             temp = temp[0].strip("_")
-            print(temp)
+            # print(temp)
             loop1 = []
             loop2 = []
             values = [temp]
             readFile(file)
             values = FindDistance(distances, loop1, values)
             values = FindAngles(angles, loop2, values)
-            print(values)
-            print("\n")
+            # print(values)
+            # print("\n")
             with open('results.csv', 'a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(values)
