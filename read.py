@@ -126,10 +126,10 @@ if __name__ == "__main__" :
     distances = [["Zn1", "Mg1"], ["Zn1", "O3"], ["V1", "O3"]]
     # distances = []
 
-    angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
+    # angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
 
     # UNCOMMENT OUT THIS LINE AND COMMENT THE ABOVE LINE TO IGNORE ANGLE RESULTS
-    # angles = []
+    angles = []
 
     # creating the header for the csv file
     with open('results.csv', 'w', newline='') as file:
