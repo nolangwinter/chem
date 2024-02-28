@@ -124,8 +124,12 @@ if __name__ == "__main__" :
     # THIS IS WHERE YOU WOULD AJUST THE VALUES THAT YOU WANT TO GET
     #***************************************************************
     distances = [["Zn1", "Mg1"], ["Zn1", "O3"], ["V1", "O3"]]
-    # distances = [["Zn1", "Mg1"], ["Zn1", "O3"], ["V1", "O3"], ['O1', 'V1']]
+    # distances = []
+
     angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
+
+    # UNCOMMENT OUT THIS LINE AND COMMENT THE ABOVE LINE TO IGNORE ANGLE RESULTS
+    # angles = []
 
     # creating the header for the csv file
     with open('results.csv', 'w', newline='') as file:
@@ -165,9 +169,10 @@ if __name__ == "__main__" :
             values = [temp]
             readFile(file)
             values = FindDistance(distances, loop1, values)
+
+            # COMMENT OUT THE BELOW LINE TO NOT INCLUDE ANGLES IN THE RESULT
             values = FindAngles(angles, loop2, values)
-            # print(values)
-            # print("\n")
+
             with open('results.csv', 'a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(values)
