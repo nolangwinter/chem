@@ -39,8 +39,12 @@ def readFile(filename):
             if (cur_loop == "loop1"):
                 #gets the error connected to the bond distance
                 res = re.findall(r'\(.*?\)', split_line[2])
+                print(res)
                 #removes the parenthesis around the value
-                err = res[0].strip("()")
+                if (len(res) != 0):
+                    err = res[0].strip("()")
+                else:
+                    err = 0
                 #removes the error from the bond distance
                 distance = re.sub(r'\([^)]*\)', "", split_line[2])
 
@@ -52,8 +56,12 @@ def readFile(filename):
             else:
                 #gets the error connected to the geo angle
                 res = re.findall(r'\(.*?\)', split_line[3])
+                print(res)
                 #removes the parenthesis around the value
-                err = res[0].strip("()")
+                if(len(res) != 0):
+                    err = res[0].strip("()")
+                else:
+                    err = 0
                 #removes the error from the bond distance
                 angle = re.sub(r'\([^)]*\)', "", split_line[3])
 
@@ -126,10 +134,10 @@ if __name__ == "__main__" :
     distances = [["Zn1", "Mg1"], ["Zn1", "O3"], ["V1", "O3"]]
     # distances = []
 
-    # angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
+    angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
 
     # UNCOMMENT OUT THIS LINE AND COMMENT THE ABOVE LINE TO IGNORE ANGLE RESULTS
-    angles = []
+    # angles = []
 
     # creating the header for the csv file
     with open('results.csv', 'w', newline='') as file:
@@ -169,8 +177,6 @@ if __name__ == "__main__" :
             values = [temp]
             readFile(file)
             values = FindDistance(distances, loop1, values)
-
-            # COMMENT OUT THE BELOW LINE TO NOT INCLUDE ANGLES IN THE RESULT
             values = FindAngles(angles, loop2, values)
 
             with open('results.csv', 'a', newline='') as file:
