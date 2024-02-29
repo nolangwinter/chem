@@ -39,7 +39,6 @@ def readFile(filename):
             if (cur_loop == "loop1"):
                 #gets the error connected to the bond distance
                 res = re.findall(r'\(.*?\)', split_line[2])
-                print(res)
                 #removes the parenthesis around the value
                 if (len(res) != 0):
                     err = res[0].strip("()")
@@ -56,7 +55,6 @@ def readFile(filename):
             else:
                 #gets the error connected to the geo angle
                 res = re.findall(r'\(.*?\)', split_line[3])
-                print(res)
                 #removes the parenthesis around the value
                 if(len(res) != 0):
                     err = res[0].strip("()")
