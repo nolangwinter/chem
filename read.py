@@ -129,7 +129,7 @@ if __name__ == "__main__" :
     # **************************************************************
     # THIS IS WHERE YOU WOULD AJUST THE VALUES THAT YOU WANT TO GET
     #***************************************************************
-    distances = [["Zn1", "Mg1"], ["Zn1", "O3"], ["V1", "O3"]]
+    distances = [["Zn1", "Mg1"], ["Zn1", "O3"]]
     # distances = []
 
     angles = [["O3", "Zn1", "O2"], ["O2", "Zn1", "O2"]]
@@ -137,8 +137,11 @@ if __name__ == "__main__" :
     # UNCOMMENT OUT THIS LINE AND COMMENT THE ABOVE LINE TO IGNORE ANGLE RESULTS
     # angles = []
 
+    # THIS IS WHERE YOU CHANGE THE NAME OF THE CSV FILE IF YOU WANT TO CREATE MULTIPLE
+    csv_name = "results2.csv"
+
     # creating the header for the csv file
-    with open('results.csv', 'w', newline='') as file:
+    with open(csv_name, 'w', newline='') as file:
         writer = csv.writer(file)
         field = ["Temp"]
 
@@ -177,12 +180,12 @@ if __name__ == "__main__" :
             values = FindDistance(distances, loop1, values)
             values = FindAngles(angles, loop2, values)
 
-            with open('results.csv', 'a', newline='') as file:
+            with open(csv_name, 'a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow(values)
 
     # creating the different graphs
-    with open('results.csv','r') as csvfile: 
+    with open(csv_name,'r') as csvfile: 
         lines = csv.reader(csvfile, delimiter=',')
         header = []
         for row in lines:
